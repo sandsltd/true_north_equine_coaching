@@ -11,11 +11,13 @@ function fixRuntimeConfig() {
   }
 
   // Read the Node.js version from package.json
-  let targetRuntime = '20.x'; // Default fallback
+  let targetRuntime = 'nodejs20.x'; // Default fallback with correct format
   try {
     const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
     if (packageJson.engines && packageJson.engines.node) {
-      targetRuntime = packageJson.engines.node;
+      const nodeVersion = packageJson.engines.node;
+      // Ensure the runtime has the nodejs prefix
+      targetRuntime = nodeVersion.startsWith('nodejs') ? nodeVersion : `nodejs${nodeVersion}`;
     }
     console.log(`📋 Using Node.js version from package.json: ${targetRuntime}`);
   } catch (error) {
@@ -45,13 +47,18 @@ function fixRuntimeConfig() {
     try {
       const config = JSON.parse(fs.readFileSync(configFile, 'utf8'));
       
-      // Fix the runtime format - remove nodejs prefix and use package.json version
-      if (config.runtime && config.runtime.startsWith('nodejs')) {
+      // Fix the runtime format - ensure it has nodejs prefix
+      if (config.runtime) {
         const oldRuntime = config.runtime;
-        config.runtime = targetRuntime;
-        
-        fs.writeFileSync(configFile, JSON.stringify(config, null, '\t'));
-        console.log(`✅ Fixed runtime in ${configFile}: ${oldRuntime} → ${targetRuntime}`);
+        // Check if runtime needs fixing (missing nodejs prefix or incorrect format)
+        if (!config.runtime.startsWith('nodejs') || config.runtime === '20.x') {
+          config.runtime = targetRuntime;
+          
+          fs.writeFileSync(configFile, JSON.stringify(config, null, '\t'));
+          console.log(`✅ Fixed runtime in ${configFile}: ${oldRuntime} → ${targetRuntime}`);
+        } else {
+          console.log(`✓ Runtime already correct in ${configFile}: ${config.runtime}`);
+        }
       }
     } catch (error) {
       console.error(`❌ Error fixing runtime config in ${configFile}:`, error.message);
