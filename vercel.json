@@ -1,7 +1,7 @@
 {
   "buildCommand": "npm run build",
   "functions": {
-    ".vercel/output/functions/_render.func/dist/server/entry.mjs": {
+    "**/*.{js,ts,mjs}": {
       "runtime": "nodejs20.x"
     }
   }
