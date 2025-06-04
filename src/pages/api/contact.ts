@@ -1,6 +1,17 @@
 import type { APIRoute } from 'astro';
 import nodemailer from 'nodemailer';
 
+export const GET: APIRoute = async () => {
+  return new Response(JSON.stringify({
+    message: 'Contact API endpoint - POST only'
+  }), {
+    status: 405,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+};
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     const data = await request.formData();
@@ -21,10 +32,23 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
+    // Check if environment variables are available
+    if (!import.meta.env.EMAIL_HOST || !import.meta.env.EMAIL_USER || !import.meta.env.EMAIL_PASS) {
+      console.error('Missing email configuration environment variables');
+      return new Response(JSON.stringify({
+        message: 'Email service temporarily unavailable'
+      }), {
+        status: 503,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    }
+
     // Create email transporter
     const transporter = nodemailer.createTransport({
       host: import.meta.env.EMAIL_HOST,
-      port: parseInt(import.meta.env.EMAIL_PORT),
+      port: parseInt(import.meta.env.EMAIL_PORT || '465'),
       secure: true,
       auth: {
         user: import.meta.env.EMAIL_USER,
@@ -164,7 +188,8 @@ Guiding you and your horse with compassion and empathy
   } catch (error) {
     console.error('Error sending email:', error);
     return new Response(JSON.stringify({
-      message: 'Error sending message'
+      message: 'Error sending message',
+      error: process.env.NODE_ENV === 'development' ? (error as Error).message : 'Internal server error'
     }), {
       status: 500,
       headers: {

@@ -1,6 +1,16 @@
 import nodemailer from 'nodemailer';
 export { renderers } from '../../renderers.mjs';
 
+const GET = async () => {
+  return new Response(JSON.stringify({
+    message: "Contact API endpoint - POST only"
+  }), {
+    status: 405,
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+};
 const POST = async ({ request }) => {
   try {
     const data = await request.formData();
@@ -18,6 +28,7 @@ const POST = async ({ request }) => {
         }
       });
     }
+    if (false) ;
     const transporter = nodemailer.createTransport({
       host: "mail.saunders-simmons.co.uk",
       port: parseInt("465"),
@@ -154,7 +165,8 @@ Guiding you and your horse with compassion and empathy
   } catch (error) {
     console.error("Error sending email:", error);
     return new Response(JSON.stringify({
-      message: "Error sending message"
+      message: "Error sending message",
+      error: process.env.NODE_ENV === "development" ? error.message : "Internal server error"
     }), {
       status: 500,
       headers: {
@@ -166,6 +178,7 @@ Guiding you and your horse with compassion and empathy
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
+  GET,
   POST
 }, Symbol.toStringTag, { value: 'Module' }));
 
