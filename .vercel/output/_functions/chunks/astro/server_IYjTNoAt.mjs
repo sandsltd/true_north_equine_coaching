@@ -3,7 +3,7 @@ import { escape } from 'html-escaper';
 import { decodeBase64, encodeHexUpperCase, encodeBase64, decodeHex } from '@oslojs/encoding';
 import 'cssesc';
 
-const ASTRO_VERSION = "5.8.1";
+const ASTRO_VERSION = "5.8.2";
 const REROUTE_DIRECTIVE_HEADER = "X-Astro-Reroute";
 const REWRITE_DIRECTIVE_HEADER_KEY = "X-Astro-Rewrite";
 const REWRITE_DIRECTIVE_HEADER_VALUE = "yes";
@@ -1033,6 +1033,9 @@ Make sure to use the static attribute syntax (\`${key}={value}\`) instead of the
   }
   if (key === "popover" && typeof value === "boolean") {
     return markHTMLString(value ? ` popover` : "");
+  }
+  if (key === "download" && typeof value === "boolean") {
+    return markHTMLString(value ? ` download` : "");
   }
   return markHTMLString(` ${key}="${toAttributeString(value, shouldEscape)}"`);
 }

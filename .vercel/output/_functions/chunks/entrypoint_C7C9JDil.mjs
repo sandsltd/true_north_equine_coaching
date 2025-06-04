@@ -1,7 +1,7 @@
-import { x as decryptString, y as createSlotValueFromString, z as isAstroComponentFactory, i as renderComponent, g as renderTemplate, B as ROUTE_TYPE_HEADER, C as REROUTE_DIRECTIVE_HEADER, A as AstroError, G as i18nNoLocaleFoundInPath, H as ResponseSentError, J as bold, K as red, O as yellow, P as dim, Q as blue, S as MiddlewareNoDataOrNextCalled, T as MiddlewareNotAResponse, V as originPathnameSymbol, W as RewriteWithBodyUsed, X as GetStaticPathsRequired, Y as InvalidGetStaticPathsReturn, Z as InvalidGetStaticPathsEntry, _ as GetStaticPathsExpectedParams, $ as GetStaticPathsInvalidRouteParam, a0 as PageNumberParamNotFound, D as DEFAULT_404_COMPONENT, a1 as ActionNotFoundError, a2 as NoMatchingStaticPathFound, a3 as PrerenderDynamicEndpointPathCollide, a4 as ReservedSlotName, a5 as renderSlotToString, a6 as renderJSX, a7 as chunkToString, a8 as isRenderInstruction, a9 as ForbiddenRewrite, aa as SessionStorageSaveError, ab as SessionStorageInitError, ac as ASTRO_VERSION, ad as green, ae as LocalsReassigned, af as PrerenderClientAddressNotAvailable, ag as clientAddressSymbol, ah as ClientAddressNotAvailable, ai as StaticClientAddressNotAvailable, aj as AstroResponseHeadersReassigned, ak as responseSentSymbol$1, al as renderPage, am as REWRITE_DIRECTIVE_HEADER_KEY, an as REWRITE_DIRECTIVE_HEADER_VALUE, ao as renderEndpoint, ap as LocalsNotAnObject, aq as REROUTABLE_STATUS_CODES } from './astro/server_CuTtz1V0.mjs';
+import { x as decryptString, y as createSlotValueFromString, z as isAstroComponentFactory, i as renderComponent, g as renderTemplate, B as ROUTE_TYPE_HEADER, C as REROUTE_DIRECTIVE_HEADER, A as AstroError, G as i18nNoLocaleFoundInPath, H as ResponseSentError, J as bold, K as red, O as yellow, P as dim, Q as blue, S as MiddlewareNoDataOrNextCalled, T as MiddlewareNotAResponse, V as originPathnameSymbol, W as RewriteWithBodyUsed, X as GetStaticPathsRequired, Y as InvalidGetStaticPathsReturn, Z as InvalidGetStaticPathsEntry, _ as GetStaticPathsExpectedParams, $ as GetStaticPathsInvalidRouteParam, a0 as PageNumberParamNotFound, D as DEFAULT_404_COMPONENT, a1 as ActionNotFoundError, a2 as NoMatchingStaticPathFound, a3 as PrerenderDynamicEndpointPathCollide, a4 as ReservedSlotName, a5 as renderSlotToString, a6 as renderJSX, a7 as chunkToString, a8 as isRenderInstruction, a9 as ForbiddenRewrite, aa as SessionStorageSaveError, ab as SessionStorageInitError, ac as ASTRO_VERSION, ad as green, ae as LocalsReassigned, af as PrerenderClientAddressNotAvailable, ag as clientAddressSymbol, ah as ClientAddressNotAvailable, ai as StaticClientAddressNotAvailable, aj as AstroResponseHeadersReassigned, ak as responseSentSymbol$1, al as renderPage, am as REWRITE_DIRECTIVE_HEADER_KEY, an as REWRITE_DIRECTIVE_HEADER_VALUE, ao as renderEndpoint, ap as LocalsNotAnObject, aq as REROUTABLE_STATUS_CODES } from './astro/server_IYjTNoAt.mjs';
 import 'clsx';
 import { serialize, parse } from 'cookie';
-import { A as ActionError, d as deserializeActionResult, s as serializeActionResult, a as ACTION_RPC_ROUTE_PATTERN, b as ACTION_QUERY_PARAMS, g as getActionQueryString, D as DEFAULT_404_ROUTE, c as default404Instance, N as NOOP_MIDDLEWARE_FN, e as ensure404Route } from './astro-designed-error-pages_D63Bur6B.mjs';
+import { A as ActionError, d as deserializeActionResult, s as serializeActionResult, a as ACTION_RPC_ROUTE_PATTERN, b as ACTION_QUERY_PARAMS, g as getActionQueryString, D as DEFAULT_404_ROUTE, c as default404Instance, N as NOOP_MIDDLEWARE_FN, e as ensure404Route } from './astro-designed-error-pages_BXa76nI2.mjs';
 import 'es-module-lexer';
 import buffer from 'node:buffer';
 import crypto$1 from 'node:crypto';
@@ -1780,11 +1780,11 @@ function sequence(...handlers) {
             if (payload instanceof Request) {
               newRequest = payload;
             } else if (payload instanceof URL) {
-              newRequest = new Request(payload, handleContext.request);
+              newRequest = new Request(payload, handleContext.request.clone());
             } else {
               newRequest = new Request(
                 new URL(payload, handleContext.url.origin),
-                handleContext.request
+                handleContext.request.clone()
               );
             }
             const oldPathname = handleContext.url.pathname;
