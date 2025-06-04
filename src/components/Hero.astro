@@ -1,39 +1,49 @@
 <section id="home" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#283454]/5 to-[#283454]/15">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
       <!-- Content Side -->
-      <div class="text-center lg:text-left">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-[#283454] mb-6 leading-tight">
+      <div class="text-center lg:text-left lg:col-span-1">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-[#283454] mb-6 leading-tight">
           Guiding You and Your Horse with 
           <span class="text-amber-600">Compassion</span> 
           and 
           <span class="text-amber-600">Empathy</span>
         </h1>
-        <p class="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+        <p class="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
           Helping equines and their humans build stronger, fear-free relationships through positive, reward-based training.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-          <a href="#contact" class="bg-[#283454] text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#1e2741] transition-colors">
+          <a href="#contact" class="bg-[#283454] text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-[#1e2741] transition-colors">
             Book a Consultation
-          </a>
-          <a href="#video-intro" class="border-2 border-[#283454] text-[#283454] px-8 py-4 rounded-lg text-lg font-semibold hover:bg-[#283454] hover:text-white transition-colors">
-            Watch Introduction Video
           </a>
         </div>
       </div>
       
-      <!-- Video Placeholder Side -->
-      <div class="flex justify-center lg:justify-end">
-        <div id="video-intro" class="bg-gray-100 rounded-2xl p-8 w-full max-w-md shadow-lg">
-          <div class="aspect-video bg-[#283454]/10 rounded-lg flex items-center justify-center mb-4">
-            <div class="text-center">
-              <div class="w-16 h-16 bg-[#283454]/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                <svg class="w-8 h-8 text-[#283454]" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
-              <p class="text-[#283454] font-medium">Introduction Video</p>
-            </div>
+      <!-- Portrait Image -->
+      <div class="flex justify-center lg:col-span-1">
+        <div class="relative">
+          <img 
+            src="/images/potrait_images_true_north/2.png" 
+            alt="Maria Lucy - True North Equine Coaching" 
+            class="w-full max-w-sm h-auto rounded-2xl shadow-2xl object-cover"
+          />
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-t from-[#283454]/20 via-transparent to-transparent"></div>
+        </div>
+      </div>
+      
+      <!-- Video Section -->
+      <div class="flex justify-center lg:col-span-1">
+        <div id="video-intro" class="bg-gray-100 rounded-2xl p-6 w-full max-w-sm shadow-lg">
+          <div class="aspect-video bg-[#283454]/10 rounded-lg overflow-hidden mb-4">
+            <iframe 
+              src="https://player.vimeo.com/video/1090386718?h=a57ea3c4ef&title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" 
+              width="100%" 
+              height="100%" 
+              frameborder="0" 
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+              title="Introduction Video"
+              class="w-full h-full rounded-lg">
+            </iframe>
           </div>
           <h3 class="text-lg font-semibold text-[#283454] mb-2">Meet Maria Lucy</h3>
           <p class="text-gray-600 text-sm">Discover my approach to compassionate equine coaching and how we can help you and your horse thrive together.</p>

@@ -7,6 +7,15 @@
       <p class="text-xl text-gray-600 max-w-3xl mx-auto">
         Ready to begin your journey with True North Equine Coaching? Let's discuss how we can help you and your horse build a stronger, more trusting partnership.
       </p>
+      
+      <!-- Decorative image -->
+      <div class="flex justify-center mt-8">
+        <img 
+          src="/images/landscape_true_north/6.png" 
+          alt="" 
+          class="w-48 h-32 object-cover rounded-lg opacity-70 shadow-md"
+        />
+      </div>
     </div>
     
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -24,7 +33,7 @@
             </div>
             <div>
               <h4 class="text-lg font-semibold text-[#283454] mb-1">Location</h4>
-              <p class="text-gray-600">Location TBC<br>""</p>
+              <p class="text-gray-600">Honiton, Exeter, Devon</p>
             </div>
           </div>
           
@@ -36,7 +45,7 @@
             </div>
             <div>
               <h4 class="text-lg font-semibold text-[#283454] mb-1">Phone</h4>
-              <p class="text-gray-600">Available upon booking</p>
+              <p class="text-gray-600">07791 080984</p>
             </div>
           </div>
           
@@ -48,7 +57,7 @@
             </div>
             <div>
               <h4 class="text-lg font-semibold text-[#283454] mb-1">Email</h4>
-              <p class="text-gray-600">maria-lucy@truenorthequinecoaching.com</p>
+              <p class="text-gray-600">mnprofessionalltd@gmail.com</p>
             </div>
           </div>
           
@@ -77,33 +86,36 @@
       <!-- Contact Form -->
       <div class="bg-gray-50 rounded-2xl p-8">
         <h4 class="text-xl font-semibold text-[#283454] mb-6">Send us a message</h4>
-        <form class="space-y-6">
+        <form id="contactForm" class="space-y-6">
           <div>
             <label for="name" class="block text-sm font-medium text-[#283454] mb-2">Name</label>
-            <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#283454] focus:border-transparent" placeholder="Your full name">
+            <input type="text" id="name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#283454] focus:border-transparent" placeholder="Your full name">
           </div>
           
           <div>
             <label for="email" class="block text-sm font-medium text-[#283454] mb-2">Email</label>
-            <input type="email" id="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#283454] focus:border-transparent" placeholder="your.email@example.com">
+            <input type="email" id="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#283454] focus:border-transparent" placeholder="your.email@example.com">
           </div>
           
           <div>
             <label for="subject" class="block text-sm font-medium text-[#283454] mb-2">Service Interest</label>
-            <select id="subject" name="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#283454] focus:border-transparent">
+            <select id="subject" name="subject" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#283454] focus:border-transparent">
               <option value="">Please select...</option>
               <option value="challenging-behaviour">Solving Challenging Behaviour</option>
               <option value="equine-athlete">Developing the Equine Athlete</option>
               <option value="novice-backing">Backing the Novice Horse</option>
               <option value="consultation">General Consultation</option>
-              <option value="beta-program">Beta Program Application</option>
               <option value="other">Other</option>
             </select>
           </div>
           
           <div>
             <label for="message" class="block text-sm font-medium text-[#283454] mb-2">Tell us about your horse and goals</label>
-            <textarea id="message" name="message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#283454] focus:border-transparent" placeholder="Please describe your horse, any challenges you're facing, and what you hope to achieve together..."></textarea>
+            <textarea id="message" name="message" required rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#283454] focus:border-transparent" placeholder="Please describe your horse, any challenges you're facing, and what you hope to achieve together..."></textarea>
+          </div>
+          
+          <div id="formMessage" class="hidden">
+            <p class="text-center font-medium"></p>
           </div>
           
           <button type="submit" class="w-full bg-[#283454] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#1e2741] transition-colors">
@@ -117,4 +129,55 @@
       </div>
     </div>
   </div>
-</section> 
+</section>
+
+<script>
+  const form = document.getElementById('contactForm') as HTMLFormElement;
+  const formMessage = document.getElementById('formMessage');
+  const messageText = formMessage?.querySelector('p');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (formMessage && messageText) {
+      // Reset message styling
+      formMessage.className = 'py-3 px-4 rounded-lg mb-4';
+      messageText.textContent = 'Sending message...';
+      formMessage.classList.remove('hidden', 'bg-green-100', 'bg-red-100');
+      formMessage.classList.add('bg-blue-100');
+      messageText.className = 'text-center font-medium text-blue-700';
+    }
+
+    try {
+      const formData = new FormData(form);
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Success message
+        if (formMessage && messageText) {
+          formMessage.classList.remove('bg-blue-100');
+          formMessage.classList.add('bg-green-100');
+          messageText.className = 'text-center font-medium text-green-700';
+          messageText.textContent = 'Message sent successfully! We will get back to you soon.';
+        }
+        form.reset();
+      } else {
+        // Error message
+        throw new Error(data.message || 'Error sending message');
+      }
+    } catch (error) {
+      // Error message
+      if (formMessage && messageText) {
+        formMessage.classList.remove('bg-blue-100');
+        formMessage.classList.add('bg-red-100');
+        messageText.className = 'text-center font-medium text-red-700';
+        messageText.textContent = error instanceof Error ? error.message : 'Error sending message. Please try again.';
+      }
+    }
+  });
+</script> 
