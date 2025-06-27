@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import About from '../components/About.astro';
+import ProfessionalAffiliations from '../components/ProfessionalAffiliations.astro';
 import Services from '../components/Services.astro';
 import PowerOfPraise from '../components/PowerOfPraise.astro';
 import Courses from '../components/Courses.astro';
@@ -17,6 +18,7 @@ import Footer from '../components/Footer.astro';
 	<main>
 		<Hero />
 		<About />
+		<ProfessionalAffiliations />
 		<Services />
 		<PowerOfPraise />
 		<Courses />
@@ -45,7 +47,7 @@ import Footer from '../components/Footer.astro';
 					
 					window.scrollTo({
 						top: elementPosition,
-						behavior: 'smooth'
+						      behavior: 'smooth'
 					});
 				}
 			});
