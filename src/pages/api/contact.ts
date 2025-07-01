@@ -35,6 +35,14 @@ export const POST: APIRoute = async ({ request }) => {
     // Check if environment variables are available
     if (!import.meta.env.EMAIL_HOST || !import.meta.env.EMAIL_USER || !import.meta.env.EMAIL_PASS) {
       console.error('Missing email configuration environment variables');
+      console.error('Required: EMAIL_HOST, EMAIL_USER, EMAIL_PASS');
+      console.error('Available:', {
+        EMAIL_HOST: !!import.meta.env.EMAIL_HOST,
+        EMAIL_USER: !!import.meta.env.EMAIL_USER,
+        EMAIL_PASS: !!import.meta.env.EMAIL_PASS,
+        EMAIL_FROM: !!import.meta.env.EMAIL_FROM,
+        EMAIL_TO: !!import.meta.env.EMAIL_TO
+      });
       return new Response(JSON.stringify({
         message: 'Email service temporarily unavailable'
       }), {
@@ -167,14 +175,26 @@ True North Equine Coaching
 Guiding you and your horse with compassion and empathy
     `;
 
-    // Send email with both HTML and text versions
-    await transporter.sendMail({
+    // Send email to both recipients
+    const recipients = [
+      import.meta.env.EMAIL_TO || 'hello@saunders-simmons.co.uk',
+      'maria-lucy@truenorthequinecoaching.com'
+    ];
+
+    const emailResult = await transporter.sendMail({
       from: import.meta.env.EMAIL_FROM,
-      to: import.meta.env.EMAIL_TO,
+      to: recipients.join(', '),
       replyTo: email as string, // This allows you to reply directly to the client
       subject: `🐴 New Enquiry: ${subject} - ${name}`,
       text: textContent,
       html: htmlContent,
+    });
+
+    console.log('Email sent successfully:', {
+      messageId: emailResult.messageId,
+      recipients: recipients,
+      from: name,
+      subject: subject
     });
 
     return new Response(JSON.stringify({

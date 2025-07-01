@@ -11,7 +11,8 @@
     "build:astro": "astro build",
     "fix-runtime": "node fix-runtime.js",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:email": "node test-email.js"
   },
   "dependencies": {
     "@astrojs/node": "^9.2.2",
@@ -22,5 +23,8 @@
     "kleur": "^4.1.5",
     "nodemailer": "^7.0.3",
     "tailwindcss": "^4.1.8"
+  },
+  "devDependencies": {
+    "dotenv": "^17.0.0"
   }
 }
