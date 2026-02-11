@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
-import * as postmark from 'postmark';
-
+import { Resend } from 'resend';
 export const GET: APIRoute = async () => {
   return new Response(JSON.stringify({
     message: 'Contact API endpoint - POST only'
@@ -33,7 +32,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     // Create Postmark client
-    const client = new postmark.ServerClient(import.meta.env.POSTMARK_API_TOKEN);
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Format professional HTML email content
     const htmlContent = `
@@ -123,7 +122,7 @@ NEW ENQUIRY - True North Equine Coaching
 
 Client Details:
 ===============
-Name: ${name}
+filename: ${name}
 Email: ${email}
 Service Interest: ${subject}
 
@@ -152,13 +151,13 @@ Guiding you and your horse with compassion and empathy
       'maria-lucy@truenorthequinecoaching.com'
     ];
 
-    const emailResult = await client.sendEmail({
-      From: import.meta.env.EMAIL_FROM,
-      To: recipients.join(', '),
-      ReplyTo: email as string,
-      Subject: `🐴 New Enquiry: ${subject} - ${name}`,
-      TextBody: textContent,
-      HtmlBody: htmlContent,
+    const emailResult = await resend.emails.send({
+      from: 'web@saunders-simmons.co.uk'.meta.env.EMAIL_FROM,
+      to: recipients.join(', '),
+      replyTo: email as string,
+      subject: `🐴 New Enquiry: ${subject} - ${name}`,
+      text: textContent,
+      html: htmlContent,
     });
 
     console.log('Email sent successfully:', {
