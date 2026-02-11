@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import nodemailer from 'nodemailer';
+import * as postmark from 'postmark';
 
 export const GET: APIRoute = async () => {
   return new Response(JSON.stringify({
@@ -32,37 +32,8 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    // Check if environment variables are available
-    if (!import.meta.env.EMAIL_HOST || !import.meta.env.EMAIL_USER || !import.meta.env.EMAIL_PASS) {
-      console.error('Missing email configuration environment variables');
-      console.error('Required: EMAIL_HOST, EMAIL_USER, EMAIL_PASS');
-      console.error('Available:', {
-        EMAIL_HOST: !!import.meta.env.EMAIL_HOST,
-        EMAIL_USER: !!import.meta.env.EMAIL_USER,
-        EMAIL_PASS: !!import.meta.env.EMAIL_PASS,
-        EMAIL_FROM: !!import.meta.env.EMAIL_FROM,
-        EMAIL_TO: !!import.meta.env.EMAIL_TO
-      });
-      return new Response(JSON.stringify({
-        message: 'Email service temporarily unavailable'
-      }), {
-        status: 503,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-    }
-
-    // Create email transporter
-    const transporter = nodemailer.createTransport({
-      host: import.meta.env.EMAIL_HOST,
-      port: parseInt(import.meta.env.EMAIL_PORT || '465'),
-      secure: true,
-      auth: {
-        user: import.meta.env.EMAIL_USER,
-        pass: import.meta.env.EMAIL_PASS,
-      },
-    });
+    // Create Postmark client
+    const client = new postmark.ServerClient(import.meta.env.POSTMARK_API_TOKEN);
 
     // Format professional HTML email content
     const htmlContent = `
@@ -95,45 +66,45 @@ export const POST: APIRoute = async ({ request }) => {
             <h1>🐴 New Enquiry Received 🐴</h1>
             <p>True North Equine Coaching</p>
           </div>
-          
+
           <div class="content">
             <p>🐎 You have received a new enquiry through your website contact form.</p>
-            
+
             <div class="field-group">
               <span class="field-label">👤 Client Name</span>
               <div class="field-value">${name}</div>
             </div>
-            
+
             <div class="field-group">
               <span class="field-label">📧 Email Address</span>
               <div class="field-value">
                 <a href="mailto:${email}" style="color: #283454; text-decoration: none;">${email}</a>
               </div>
             </div>
-            
+
             <div class="field-group">
               <span class="field-label">🎯 Service Interest</span>
               <div class="field-value">${subject}</div>
             </div>
-            
+
             <div class="field-group">
               <span class="field-label">💬 Message</span>
               <div class="message-content">${message}</div>
             </div>
-            
+
             <div class="timestamp">
-              📅 Received: ${new Date().toLocaleString('en-GB', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric', 
-                hour: '2-digit', 
+              📅 Received: ${new Date().toLocaleString('en-GB', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
                 minute: '2-digit',
                 timeZone: 'Europe/London'
               })}
             </div>
           </div>
-          
+
           <div class="footer">
             <p><strong>🐴 True North Equine Coaching 🐴</strong></p>
             <p>Guiding you and your horse with compassion and empathy</p>
@@ -160,12 +131,12 @@ Message:
 ========
 ${message}
 
-Received: ${new Date().toLocaleString('en-GB', { 
-  weekday: 'long', 
-  year: 'numeric', 
-  month: 'long', 
-  day: 'numeric', 
-  hour: '2-digit', 
+Received: ${new Date().toLocaleString('en-GB', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: '2-digit',
   minute: '2-digit',
   timeZone: 'Europe/London'
 })}
@@ -181,17 +152,17 @@ Guiding you and your horse with compassion and empathy
       'maria-lucy@truenorthequinecoaching.com'
     ];
 
-    const emailResult = await transporter.sendMail({
-      from: import.meta.env.EMAIL_FROM,
-      to: recipients.join(', '),
-      replyTo: email as string, // This allows you to reply directly to the client
-      subject: `🐴 New Enquiry: ${subject} - ${name}`,
-      text: textContent,
-      html: htmlContent,
+    const emailResult = await client.sendEmail({
+      From: import.meta.env.EMAIL_FROM,
+      To: recipients.join(', '),
+      ReplyTo: email as string,
+      Subject: `🐴 New Enquiry: ${subject} - ${name}`,
+      TextBody: textContent,
+      HtmlBody: htmlContent,
     });
 
     console.log('Email sent successfully:', {
-      messageId: emailResult.messageId,
+      messageId: emailResult.MessageID,
       recipients: recipients,
       from: name,
       subject: subject
@@ -217,4 +188,4 @@ Guiding you and your horse with compassion and empathy
       }
     });
   }
-}; 
+};

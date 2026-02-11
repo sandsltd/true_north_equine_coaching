@@ -18,10 +18,9 @@
     "@astrojs/node": "^9.2.2",
     "@astrojs/vercel": "^8.1.5",
     "@tailwindcss/vite": "^4.1.8",
-    "@types/nodemailer": "^6.4.17",
     "astro": "^5.8.1",
     "kleur": "^4.1.5",
-    "nodemailer": "^7.0.3",
+    "postmark": "^4.0.5",
     "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
